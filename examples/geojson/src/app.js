@@ -9,6 +9,12 @@ import {updatePercentiles} from './utils';
 
 const MAPBOX_TOKEN = ''; // Set your mapbox token here
 
+const mapStyle = {
+  version: 8,
+  sources: {},
+  layers: []
+}
+
 export default function App() {
   const [viewport, setViewport] = useState({
     latitude: 40,
@@ -52,17 +58,14 @@ export default function App() {
     return allData && updatePercentiles(allData, f => f.properties.income[year]);
   }, [allData, year]);
 
+
   return (
     <>
       <MapGL
         {...viewport}
         width="100%"
         height="100%"
-        mapStyle={{
-          version: 8,
-          sources: {},
-          layers: []
-        }}
+        mapStyle={mapStyle}
         onViewportChange={setViewport}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         interactiveLayerIds={['data']}
