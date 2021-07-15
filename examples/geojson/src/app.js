@@ -60,32 +60,27 @@ export default function App() {
         height="100%"
         mapStyle={{
           version: 8,
-          sources: {
-            'raster-source': {
-              type: 'raster',
-              tiles: [
-                'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
-              ],
-              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
-              tileSize: 256,
-              maxzoom: 22
-            }
-          },
-          layers: [
-            {
-              id: 'raster-layer',
-              type: 'raster',
-              source: 'raster-source'
-            }
-          ]
+          sources: {},
+          layers: []
         }}
         onViewportChange={setViewport}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         interactiveLayerIds={['data']}
         onHover={onHover}
       >
+        <Source
+          type="raster"
+          tiles={[
+            'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          ]}
+          attribution='&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+          tileSize={256}
+        >
+          <Layer id='raster-layer' type='raster' maxzoom={22}/>
+        </Source>
+
         <Source type="geojson" data={data}>
           <Layer {...dataLayer} />
         </Source>
