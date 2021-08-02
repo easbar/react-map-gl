@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 function ControlPanel(props) {
-  const {year} = props;
+  const {year, layer} = props;
 
   return (
     <div className="control-panel">
@@ -33,6 +33,15 @@ function ControlPanel(props) {
           step={1}
           onChange={evt => props.onChange(evt.target.value)}
         />
+      </div>
+      <hr/>
+      <div >
+        <input type="radio" value="mapbox://styles/mapbox/light-v10" name="light"
+               checked={layer === "mapbox://styles/mapbox/light-v10"} onChange={evt => props.onChangeLayer(evt.target.value)}/> light
+        <input type="radio" value="mapbox://styles/mapbox/dark-v10" name="dark"
+               checked={layer === "mapbox://styles/mapbox/dark-v10"} onChange={evt => props.onChangeLayer(evt.target.value)}/> dark
+        <input type="radio" value="mapbox://styles/mapbox/outdoors-v11" name="outdoors"
+               checked={layer === "mapbox://styles/mapbox/outdoors-v11"} onChange={evt => props.onChangeLayer(evt.target.value)}/> outdoors
       </div>
     </div>
   );

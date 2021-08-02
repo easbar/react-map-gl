@@ -20,6 +20,8 @@ export default function App() {
   const [year, setYear] = useState(2015);
   const [allData, setAllData] = useState(null);
   const [hoverInfo, setHoverInfo] = useState(null);
+  const [layer, setLayer] = useState('mapbox://styles/mapbox/outdoors-v11')
+  const [beforeId, setBeforeId] = useState('')
 
   useEffect(() => {
     /* global fetch */
@@ -58,14 +60,20 @@ export default function App() {
         {...viewport}
         width="100%"
         height="100%"
-        mapStyle="mapbox://styles/mapbox/light-v9"
+        mapStyle={layer}
         onViewportChange={setViewport}
         mapboxApiAccessToken={MAPBOX_TOKEN}
         interactiveLayerIds={['data']}
         onHover={onHover}
+        onLoad={(evt) => {
+          setBeforeId(evt.target.getStyle().layers.find(l => l.type === 'symbol').id)
+          evt.target.on('styledata', (evt) => {
+            setBeforeId(evt.target.getStyle().layers.find(l => l.type === 'symbol').id)
+          })
+        }}
       >
         <Source type="geojson" data={data}>
-          <Layer {...dataLayer} />
+          <Layer {...dataLayer} beforeId={beforeId} />
         </Source>
         {hoverInfo && (
           <div className="tooltip" style={{left: hoverInfo.x, top: hoverInfo.y}}>
@@ -76,7 +84,7 @@ export default function App() {
         )}
       </MapGL>
 
-      <ControlPanel year={year} onChange={value => setYear(value)} />
+      <ControlPanel year={year} onChange={value => setYear(value)} layer={layer} onChangeLayer={(value => setLayer(value))} />
     </>
   );
 }
